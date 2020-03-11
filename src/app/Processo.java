@@ -17,7 +17,7 @@ public class Processo extends Thread implements IDado {
     // region construtores
     // Construtor cria um processo com pid -1 caso haja algum erro com os dados
     // passados
-    public Processo(int pid, String nome, int prioridade, int ciclos) { // @note construtor
+    public Processo(int pid, String nome, int prioridade, int ciclos) { 
         if (!(setPid(pid) && setPrioridade(prioridade)) && setCiclos(ciclos))
             pid = -1;
     }
@@ -93,23 +93,26 @@ public class Processo extends Thread implements IDado {
 
     @Override
     public int compareTo(IDado o) {
-        // TODO Auto-generated method stub
-        return 0;
+        Processo processo = (Processo) o;
+        if (processo.getPid() > this.pid)
+            return 1;
+        else if (processo.getPid() < this.pid)
+            return -1;
+        else
+            return 0;
     }
 
     @Override
     public int getID() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.pid;
     }
     // endregion
 
-    public void executar(int tempo) throws InterruptedException {
-        if(ciclos >= tempo) {
-            Thread.sleep(tempo);
-            ciclos -= tempo;
-        }
-        else {
+    public void executar(int quantum) throws InterruptedException { //@note executar
+        if (ciclos >= quantum) {
+            Thread.sleep(quantum);
+            ciclos -= quantum;
+        } else {
             Thread.sleep(ciclos);
             ciclos = 0;
         }

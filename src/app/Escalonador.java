@@ -80,7 +80,7 @@ public class Escalonador {
     // endregion
 
     public boolean addProcesso(Processo processo) {
-        return filasDeProcessos[processo.getPrioridade() - 1].add(processo);
+        return filasDeProcessos[processo.getPrioridade() - 1].adicionarElemento(processo);
     }
 
     // Retorna a fila de acordo com a prioridade
@@ -89,21 +89,21 @@ public class Escalonador {
     }
 
     // Executa todos os processos na fila de processos
-    public void run() throws InterruptedException {
+    public void executar() throws InterruptedException { //@note executar
         for (Fila fila : filasDeProcessos) {
             while (!fila.isEmpty()) {
-                Processo processo = (Processo) fila.retirar();
+                Processo processo = (Processo) fila.retirarElemento();
                 processo.executar(quantum);
                 processo.wait();
                 if (processo.getCiclos() != 0) {
-                    filaDeEspera.add(processo);
+                    filaDeEspera.adicionarElemento(processo);
                     rebaixarProcesso(processo);
                 }
             }
         }
 
         while (!filaDeEspera.isEmpty())
-            addProcesso((Processo) filaDeEspera.retirar());
+            addProcesso((Processo) filaDeEspera.retirarElemento());
     }
 
     public void rebaixarProcesso(Processo processo) {
