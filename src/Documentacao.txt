@@ -1,0 +1,3 @@
+Regra para rebaixamento:
+    Se o processo não terminar na primeira execução, a sua prioridade é rebaixada em 1 (uma) unidade;
+A cada 200ms passados em espera prioridade aumenta 1;
