@@ -7,9 +7,9 @@ import estruturadedados.IDado;
 /**
  * Processo
  */
-public class Processo extends Thread implements IDado {
+public class Processo implements IDado {
 
-    static int nextPid = 0;
+    private static int nextPid = 0;
     private int pid;
     private String nome;
     private int prioridade;
@@ -110,6 +110,5 @@ public class Processo extends Thread implements IDado {
             Thread.sleep(ciclos);
             ciclos = 0;
         }
-        Thread.currentThread().notify();
     }
 }

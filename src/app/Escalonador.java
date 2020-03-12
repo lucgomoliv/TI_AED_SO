@@ -1,5 +1,8 @@
 package app;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
+
 import estruturadedados.Fila;
 
 /**
@@ -91,21 +94,39 @@ public class Escalonador {
     }
 
     // Executa todos os processos na fila de processos
-    public void executar() throws InterruptedException { // @note executar
-        for (Fila fila : filasDeProcessos) {
-            while (!fila.isEmpty()) {
-                Processo processo = (Processo) fila.retirarElemento();
-                processo.executar(quantum);
-                processo.wait();
-                if (processo.getCiclos() != 0) {
-                    filaDeEspera.adicionarElemento(processo);
-                    rebaixarProcesso(processo);
+    public void executar(JFrameMain main) throws InterruptedException { // @note executar
+        while (true) {
+            for (Fila fila : filasDeProcessos) {
+                while (!fila.isEmpty()) {
+                    Processo processo = (Processo) fila.retirarElemento();
+                    main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
+                    Thread execucao = new Thread(() -> {
+                        synchronized (this) {
+                            try {
+                                processo.executar(quantum);
+                            } catch (InterruptedException e) {
+                                // TODO senao o caram xinga xD
+                            }
+                            notify();
+                        }
+                    });
+                    execucao.start();
+                    synchronized (execucao) {
+                        execucao.wait();
+                    }
+                    if (processo.getCiclos() != 0) {
+                        filaDeEspera.adicionarElemento(processo);
+                        rebaixarProcesso(processo);
+                    }
+                    main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
+                    main.atualizar();
                 }
             }
-        }
 
-        while (!filaDeEspera.isEmpty())
-            addProcesso((Processo) filaDeEspera.retirarElemento());
+            while (!filaDeEspera.isEmpty())
+                addProcesso((Processo) filaDeEspera.retirarElemento());
+            main.atualizar();
+        }
     }
 
     public void rebaixarProcesso(Processo processo) {
@@ -116,5 +137,15 @@ public class Escalonador {
     public void promoverProcesso(Processo processo) {
         if (processo.getPrioridade() > 1)
             processo.setPrioridade(processo.getPrioridade() - 1); // Regra de negócio, consulte a documentacao
+    }
+
+    public String timeNow() {
+        LocalDateTime now = LocalDateTime.now();
+        int hour = now.getHour();
+        int minute = now.getMinute();
+        int second = now.getSecond();
+        int millis = now.get(ChronoField.MILLI_OF_SECOND); // Note: no direct getter available.
+
+        return (hour + ":" + minute + ":" + second + "." + millis);
     }
 }
