@@ -38,6 +38,8 @@ public class Fila {
         int index = 0;
         while(aux.proximo != null){
             dados[index] = aux.proximo.dado;
+            aux = aux.proximo;
+            index++;
         }
         return dados;
     }

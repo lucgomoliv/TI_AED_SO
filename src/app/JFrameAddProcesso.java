@@ -11,12 +11,15 @@ package app;
  */
 public class JFrameAddProcesso extends javax.swing.JFrame {
 
+    JFrameMain main;
+
     /**
      * Creates new form NewJFrame1
      */
-    public JFrameAddProcesso() {
+    public JFrameAddProcesso(JFrameMain main) {
         initComponents();
         setLocationRelativeTo(null);
+        this.main = main;
     }
 
     /**
@@ -36,7 +39,7 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         spinnerPrioridade = new javax.swing.JSpinner();
-        spinnerPrioridade1 = new javax.swing.JSpinner();
+        spinnerCiclos = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Adicionar Processo");
@@ -72,10 +75,10 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
         jLabel4.setText("Quantidade de Ciclos");
 
         spinnerPrioridade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        spinnerPrioridade.setModel(new javax.swing.SpinnerNumberModel(0, 0, 20, 1));
+        spinnerPrioridade.setModel(new javax.swing.SpinnerNumberModel(1, 1, 20, 1));
 
-        spinnerPrioridade1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        spinnerPrioridade1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        spinnerCiclos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        spinnerCiclos.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,7 +99,7 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spinnerPrioridade1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinnerCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(152, 152, 152))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -125,7 +128,7 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(spinnerPrioridade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spinnerCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
@@ -136,12 +139,14 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        // TODO add your handling code here:
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {       
+        Processo processo = new Processo(txtNome.getText().toString(), (int)spinnerPrioridade.getValue(), (int)spinnerCiclos.getValue());                                
+        main.escalonador.addProcesso(processo);
+        main.atualizar();
     }                                      
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
+        this.dispose();
     }                                           
 
     //region variables
@@ -153,7 +158,7 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JSpinner spinnerPrioridade;
-    private javax.swing.JSpinner spinnerPrioridade1;
+    private javax.swing.JSpinner spinnerCiclos;
     private javax.swing.JTextField txtNome;
     // End of variables declaration      
     //endregion             

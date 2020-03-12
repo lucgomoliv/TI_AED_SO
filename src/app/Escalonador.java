@@ -74,7 +74,9 @@ public class Escalonador {
     public Escalonador(int prioridadeMinima, int prioridadeMaxima, int quantum) {
         if (!(setPrioridadeMaxima(prioridadeMaxima) && setPrioridadeMinima(prioridadeMinima) && setQuantum(quantum)))
             filasDeProcessos = null;
-        filasDeProcessos = new Fila[prioridadeMaxima - prioridadeMinima];
+        filasDeProcessos = new Fila[prioridadeMaxima - prioridadeMinima + 1];
+        for (int i = 0; i < filasDeProcessos.length; i++)
+            filasDeProcessos[i] = new Fila();
         filaDeEspera = new Fila();
     }
     // endregion
@@ -84,12 +86,12 @@ public class Escalonador {
     }
 
     // Retorna a fila de acordo com a prioridade
-    public Fila filaPorPropriedade(int prioridade) {
+    public Fila filaPorPrioridade(int prioridade) {
         return filasDeProcessos[prioridade - 1];
     }
 
     // Executa todos os processos na fila de processos
-    public void executar() throws InterruptedException { //@note executar
+    public void executar() throws InterruptedException { // @note executar
         for (Fila fila : filasDeProcessos) {
             while (!fila.isEmpty()) {
                 Processo processo = (Processo) fila.retirarElemento();

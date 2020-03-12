@@ -18,25 +18,17 @@ public class Processo extends Thread implements IDado {
     // region construtores
     // Construtor cria um processo com pid -1 caso haja algum erro com os dados
     // passados
-    public Processo(String nome, int prioridade, int ciclos) { 
-        if (!(setPid(pid) && setPrioridade(prioridade)) && setCiclos(ciclos))
-            pid = -1;
-            pid = nextPid;
-            nextPid++;
+    public Processo(String nome, int prioridade, int ciclos) {
+        if(!(setPrioridade(prioridade) && setCiclos(ciclos))) this.pid = -1;
+        setNome(nome);
+        this.pid = nextPid;
+        nextPid++;
     }
     // endregion
 
     // region gerais
     public int getPid() {
         return this.pid;
-    }
-
-    public boolean setPid(int pid) {
-        if (pid >= 0) {
-            this.pid = pid;
-            return true;
-        } else
-            return false;
     }
 
     public String getNome() {
@@ -79,8 +71,7 @@ public class Processo extends Thread implements IDado {
             return false;
         }
         Processo processo = (Processo) o;
-        return pid == processo.pid && Objects.equals(nome, processo.nome) && prioridade == processo.prioridade
-                && ciclos == processo.ciclos;
+        return pid == processo.pid;
     }
 
     @Override
@@ -111,7 +102,7 @@ public class Processo extends Thread implements IDado {
     }
     // endregion
 
-    public void executar(int quantum) throws InterruptedException { //@note executar
+    public void executar(int quantum) throws InterruptedException { // @note executar
         if (ciclos >= quantum) {
             Thread.sleep(quantum);
             ciclos -= quantum;

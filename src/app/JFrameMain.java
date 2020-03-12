@@ -5,6 +5,8 @@
  */
 package app;
 
+import java.util.Arrays;
+
 /**
  *
  * @author 00472409
@@ -16,9 +18,9 @@ public class JFrameMain extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public JFrameMain() {
-        escalonador = new Escalonador(1, 20, 100);
         initComponents();
         setLocationRelativeTo(null);
+        escalonador = new Escalonador(1, 20, 100);
     }
 
     /**
@@ -439,12 +441,33 @@ public class JFrameMain extends javax.swing.JFrame {
     }                                           
 
     private void btnAddProcessoActionPerformed(java.awt.event.ActionEvent evt) {                                               
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrameAddProcesso().setVisible(true);
-            }
-        });
-    }          
+        JFrameAddProcesso addProcesso = new JFrameAddProcesso(this);
+        addProcesso.setVisible(true);
+    }   
+    
+    // Atualiza os dados na tela
+    public void atualizar(){
+        label1.setText(Arrays.toString(escalonador.filaPorPrioridade(1).listarElementos()));
+        label2.setText(Arrays.toString(escalonador.filaPorPrioridade(2).listarElementos()));
+        label3.setText(Arrays.toString(escalonador.filaPorPrioridade(3).listarElementos()));
+        label4.setText(Arrays.toString(escalonador.filaPorPrioridade(4).listarElementos()));
+        label5.setText(Arrays.toString(escalonador.filaPorPrioridade(5).listarElementos()));
+        label6.setText(Arrays.toString(escalonador.filaPorPrioridade(6).listarElementos()));
+        label7.setText(Arrays.toString(escalonador.filaPorPrioridade(7).listarElementos()));
+        label8.setText(Arrays.toString(escalonador.filaPorPrioridade(8).listarElementos()));
+        label9.setText(Arrays.toString(escalonador.filaPorPrioridade(9).listarElementos()));
+        label10.setText(Arrays.toString(escalonador.filaPorPrioridade(10).listarElementos()));
+        label11.setText(Arrays.toString(escalonador.filaPorPrioridade(11).listarElementos()));
+        label12.setText(Arrays.toString(escalonador.filaPorPrioridade(12).listarElementos()));
+        label13.setText(Arrays.toString(escalonador.filaPorPrioridade(13).listarElementos()));
+        label14.setText(Arrays.toString(escalonador.filaPorPrioridade(14).listarElementos()));
+        label15.setText(Arrays.toString(escalonador.filaPorPrioridade(15).listarElementos()));
+        label16.setText(Arrays.toString(escalonador.filaPorPrioridade(16).listarElementos()));
+        label17.setText(Arrays.toString(escalonador.filaPorPrioridade(17).listarElementos()));
+        label18.setText(Arrays.toString(escalonador.filaPorPrioridade(18).listarElementos()));
+        label19.setText(Arrays.toString(escalonador.filaPorPrioridade(19).listarElementos()));
+        label20.setText(Arrays.toString(escalonador.filaPorPrioridade(20).listarElementos()));
+    }
     
     //region variables
     // Variables declaration - do not modify                     
