@@ -1,6 +1,7 @@
 package app;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class App {
     public static void main(String[] args) {
@@ -34,6 +35,12 @@ public class App {
                 try {
                     new JFrameMain().setVisible(true);
                 } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NumberFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }

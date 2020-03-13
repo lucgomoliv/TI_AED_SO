@@ -80,8 +80,7 @@ public class Processo implements IDado {
 
     @Override
     public String toString() {
-        return "{" + " pid='" + getPid() + "'" + ", nome='" + getNome() + "'" + ", prioridade='" + getPrioridade() + "'"
-                + ", ciclos='" + getCiclos() + "'" + "}";
+        return "PID='" + getPid() + "'" + ", nome='" + getNome();
     }
 
     @Override

@@ -11,13 +11,20 @@ public class Fila {
         this.ultimo = this.primeiro = new Elemento(null);
     }
 
-    // Adiciona um elemento no final da fila
+    /**
+     * Adiciona um elemento no final da fila
+     * @param dado
+     * @return true ou false
+     */
     public boolean adicionarElemento(IDado dado){
         this.ultimo.proximo = ultimo = new Elemento(dado);
         return true;
     }
 
-    // Retira o primeiro elemento da fila
+    /**
+     * Retira o primeiro elemento da fila
+     * @return primeiro IDado
+     */
     public IDado retirarElemento(){
         if(this.primeiro == this.ultimo) return null;
         Elemento aux = this.primeiro.proximo;
@@ -26,12 +33,20 @@ public class Fila {
         return aux.dado;
     }
 
-    // Retorna true se a fila está vazia
+    /**
+     * Retorna true se a fila está vazia
+     * @return true ou false
+     */
     public boolean isEmpty(){
         if(this.primeiro.proximo == null) return true;
         else return false;
     }
 
+    
+    /**
+     * Retorna um array de IDado presentes na fila
+     * @return IDado[] 
+     */
     public IDado[] listarElementos(){
         IDado[] dados = new IDado[numeroDeElementos()]; 
         Elemento aux = this.primeiro;
@@ -44,6 +59,10 @@ public class Fila {
         return dados;
     }
 
+    /**
+     * Retorna o número de elementos da fila
+     * @return a number
+     */
     public int numeroDeElementos(){
         int num = 0;
         Elemento aux = this.primeiro;
@@ -59,7 +78,7 @@ public class Fila {
         StringBuilder sb = new StringBuilder();
         Elemento aux = this.primeiro;
         while(aux.proximo != null){
-            sb.append(aux.proximo.dado.getID() + "; ");
+            sb.append(aux.proximo.dado.toString() + "; ");
             aux = aux.proximo;
         }
         return sb.toString();
