@@ -506,7 +506,7 @@ public class JFrameMain extends javax.swing.JFrame {
 	}
 
 	public void lerArquivo() throws NumberFormatException, IOException {
-		File file = new File("bin\\processosnovo.txt");
+		File file = new File("processosnovo.txt");
 		Scanner sc = new Scanner(file);
 		while (sc.hasNextLine()) {
 			String[] dados = sc.nextLine().split(";");
