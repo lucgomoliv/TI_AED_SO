@@ -140,9 +140,9 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {       
-        Processo processo = new Processo(txtNome.getText().toString(), (int)spinnerPrioridade.getValue(), (int)spinnerCiclos.getValue());                                
+        /*Processo processo = new Processo(txtNome.getText().toString(), (int)spinnerPrioridade.getValue(), (int)spinnerCiclos.getValue());                                
         main.escalonador.addProcesso(processo);
-        main.atualizar();
+        main.atualizar();*/
     }                                      
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {                                            

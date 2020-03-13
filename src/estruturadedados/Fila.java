@@ -53,4 +53,15 @@ public class Fila {
         }
         return num;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Elemento aux = this.primeiro;
+        while(aux.proximo != null){
+            sb.append(aux.proximo.dado.getID() + "; ");
+            aux = aux.proximo;
+        }
+        return sb.toString();
+    }
 }

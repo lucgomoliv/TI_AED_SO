@@ -9,7 +9,7 @@ import estruturadedados.IDado;
  */
 public class Processo implements IDado {
 
-    private static int nextPid = 0;
+    //private static int nextPid = 0;
     private int pid;
     private String nome;
     private int prioridade;
@@ -18,11 +18,10 @@ public class Processo implements IDado {
     // region construtores
     // Construtor cria um processo com pid -1 caso haja algum erro com os dados
     // passados
-    public Processo(String nome, int prioridade, int ciclos) {
+    public Processo(int pid, String nome, int prioridade, int ciclos) {
         if(!(setPrioridade(prioridade) && setCiclos(ciclos))) this.pid = -1;
         setNome(nome);
-        this.pid = nextPid;
-        nextPid++;
+        this.pid = pid;
     }
     // endregion
 
