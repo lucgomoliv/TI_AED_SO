@@ -62,9 +62,20 @@ public class Escalonador {
     // endregion
 
     // region construtores
-    // Construtor atribui nulo para filas de processos se dados estiverem errados
-    public Escalonador(int prioridadeMinima, int prioridadeMaxima, int quantum, Processo... processos) { // @note
-                                                                                                         // construtor
+    /**
+     * Construtores atribuem nulo para filas de processos se dados estiverem errados
+     */
+
+    // @note construtores
+    /**
+     * Construtor com vários processos sendo passados como parâmetros
+     * 
+     * @param prioridadeMinima prioridade mínima
+     * @param prioridadeMaxima prioridade máxima
+     * @param quantum          quantidade de tempo para execução para cada processo
+     * @param processos        processos
+     */
+    public Escalonador(int prioridadeMinima, int prioridadeMaxima, int quantum, Processo... processos) {
         if (!(setPrioridadeMaxima(prioridadeMaxima) && setPrioridadeMinima(prioridadeMinima) && setQuantum(quantum)))
             filasDeProcessos = null;
         filasDeProcessos = new Fila[prioridadeMaxima - prioridadeMinima];
@@ -73,7 +84,13 @@ public class Escalonador {
         filaDeEspera = new Fila();
     }
 
-    // Construtor atribui nulo para filas de processos se dados estiverem errados
+    /**
+     * Construtor sem processos
+     * 
+     * @param prioridadeMinima prioridade mínima
+     * @param prioridadeMaxima prioridade máxima
+     * @param quantum          quantidade de tempo para execução para cada processo
+     */
     public Escalonador(int prioridadeMinima, int prioridadeMaxima, int quantum) {
         if (!(setPrioridadeMaxima(prioridadeMaxima) && setPrioridadeMinima(prioridadeMinima) && setQuantum(quantum)))
             filasDeProcessos = null;
@@ -84,17 +101,42 @@ public class Escalonador {
     }
     // endregion
 
+    /**
+     * Adiciona um processo a lista de processos, retornando um valor booleano se a
+     * operção foi bem sucedida ou não
+     * 
+     * @param processo processo
+     * @return true ou false
+     */
     public boolean addProcesso(Processo processo) {
         return filasDeProcessos[processo.getPrioridade() - 1].adicionarElemento(processo);
     }
 
-    // Retorna a fila de acordo com a prioridade
+    /**
+     * Retorna a fila de acordo com a prioridade passada retornando null se a
+     * prioridade não existir
+     * 
+     * @param prioridade
+     * @return uma Fila ou null
+     */
     public Fila filaPorPrioridade(int prioridade) {
-        return filasDeProcessos[prioridade - 1];
+        try {
+            return filasDeProcessos[prioridade - 1];
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Fila não existe");
+            return null;
+        }
     }
 
-    // Executa todos os processos na fila de processos
-    public void executar(JFrameMain main) throws InterruptedException { // @note executar
+    /**
+     * Executa todos os processos na fila de processos
+     * 
+     * @param main JFrame que contém o método log
+     * @throws InterruptedException
+     */
+    // @note executar
+    // @todo refatorar esse código, principalmente o uso do log
+    public void executar(JFrameMain main) throws InterruptedException {
         while (true) {
             for (Fila fila : filasDeProcessos) {
                 while (!fila.isEmpty()) {
@@ -105,7 +147,7 @@ public class Escalonador {
                             try {
                                 processo.executar(quantum);
                             } catch (InterruptedException e) {
-                                // TODO senao o caram xinga xD
+                                System.out.println("Thread Interrompida!");
                             }
                             notify();
                         }
@@ -129,22 +171,39 @@ public class Escalonador {
         }
     }
 
+    /**
+     * Rebaixa o processo em uma unidade de prioridade (Regra de negócio, consultar
+     * a documentação para saber mais)
+     * 
+     * @param processo
+     */
     public void rebaixarProcesso(Processo processo) {
         if (processo.getPrioridade() < 20)
-            processo.setPrioridade(processo.getPrioridade() + 1); // Regra de negócio, consulte a documentacao
+            processo.setPrioridade(processo.getPrioridade() + 1);
     }
 
+    /**
+     * Promove o processo em uma unidade de prioridade (Regra de negócio, consultar
+     * a documentação para saber mais)
+     * 
+     * @param processo
+     */
     public void promoverProcesso(Processo processo) {
         if (processo.getPrioridade() > 1)
-            processo.setPrioridade(processo.getPrioridade() - 1); // Regra de negócio, consulte a documentacao
+            processo.setPrioridade(processo.getPrioridade() - 1);
     }
 
-    public String timeNow() {
+    /**
+     * Retorna o tempo atual
+     * 
+     * @return uma cadeia de caracteres no formato hh:mm:ss.SSS
+     */
+    private String timeNow() {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
         int minute = now.getMinute();
         int second = now.getSecond();
-        int millis = now.get(ChronoField.MILLI_OF_SECOND); // Note: no direct getter available.
+        int millis = now.get(ChronoField.MILLI_OF_SECOND);
 
         return (hour + ":" + minute + ":" + second + "." + millis);
     }
