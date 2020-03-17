@@ -2,11 +2,11 @@
 
 ## [Progresso Geral](progresso.md)
 
-⬤⬤⬤⬤⬤⬤⬤◐○○ 75%
+⬤⬤⬤⬤⬤⬤◐○○○ 65%
 
 ## Progresso de código
 
-⬤⬤⬤⬤⬤⬤⬤⬤◕○ 88%
+⬤⬤⬤⬤⬤⬤⬤⬤⬤◐ 95%
 
 ## Progresso de refatoração
 
@@ -14,7 +14,7 @@
 
 ## Progresso de documentação
 
-⬤⬤⬤⬤○○○○○○ 40%
+⬤⬤⬤⬤⬤⬤⬤⬤⬤⬤ 100%
 
 ## TODO
 
@@ -26,3 +26,5 @@
 - [x] Escrever TODO no README
 
 [Documentação](documentacao.md)
+
+Barras de progresso geradas por <https://changaco.oy.lc/unicode-progress-bars/>
