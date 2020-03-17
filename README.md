@@ -1,9 +1,13 @@
 # TI_AED_SO
 
-## Progresso Geral ⬤⬤⬤⬤◔○ 71%
-## Progresso de código ⬤⬤⬤⬤⬤⬤⬤⬤◕○ 88%
-## Progresso de refatoração ○○○○○○○○○○ 0%
-## Progresso de documentação ⬤⬤⬤⬤○○○○○○ 40%
+## Progresso Geral 
+⬤⬤⬤⬤◔○ 71%
+## Progresso de código 
+⬤⬤⬤⬤⬤⬤⬤⬤◕○ 88%
+## Progresso de refatoração 
+○○○○○○○○○○ 0%
+## Progresso de documentação 
+⬤⬤⬤⬤○○○○○○ 40%
 
 ## TODO
 
