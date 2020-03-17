@@ -3,9 +3,12 @@
 ## Regra para rebaixamento
 
     Se o processo não terminar na primeira execução, a sua prioridade é rebaixada em 1 (uma) unidade;
+
+## Regra para promoção
+
     A cada 200ms passados em espera prioridade aumenta 1; (Rever se é isso mesmo e aplicar)
 
-## Gerar Arquivo .jar
+## Gerar arquivo .jar
 
     jar cvfe app.jar app.App bin/*
 
