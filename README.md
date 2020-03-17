@@ -20,7 +20,7 @@
 
 - [ ] Implementar todas as funcionalidades
 - [ ] Refatorar o código
-- [ ] Documentar código
+- [x] Documentar código
 - [x] Tomar café
 - [x] Procrastinar
 - [x] Escrever TODO no README
