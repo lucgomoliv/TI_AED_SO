@@ -8,3 +8,5 @@
 - [x] Tomar café
 - [x] Procrastinar
 - [x] Escrever TODO no README
+
+[Documentação](documentacao.md)
