@@ -145,7 +145,8 @@ public class Escalonador {
                     Thread execucao = new Thread(() -> {
                         synchronized (this) {
                             try {
-                                processo.executar(quantum);
+                                processo.executar();
+                                Thread.sleep(quantum);
                             } catch (InterruptedException e) {
                                 System.out.println("Thread Interrompida!");
                             }
@@ -157,8 +158,8 @@ public class Escalonador {
                         execucao.wait();
                     }
                     if (processo.getCiclos() != 0) {
-                        filaDeEspera.adicionarElemento(processo);
-                        rebaixarProcesso(processo);
+                        aplicarRegra();//faz alguma coisa, ainda nao implementada
+                        addProcesso(processo);
                     }
                     main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
                     main.atualizar();
@@ -206,5 +207,9 @@ public class Escalonador {
         int millis = now.get(ChronoField.MILLI_OF_SECOND);
 
         return (hour + ":" + minute + ":" + second + "." + millis);
+    }
+
+    private void aplicarRegra(){
+        //Faz alguma coisa, regra de negocio
     }
 }

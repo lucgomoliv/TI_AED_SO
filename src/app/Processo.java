@@ -160,13 +160,7 @@ public class Processo implements IDado {
      * @param quantum quantidade de tempo que o processo tem para executar
      * @throws InterruptedException
      */
-    public void executar(int quantum) throws InterruptedException { // @note executar
-        if (ciclos >= quantum) {
-            Thread.sleep(quantum);
-            ciclos -= quantum;
-        } else {
-            Thread.sleep(ciclos);
-            ciclos = 0;
-        }
+    public void executar() throws InterruptedException { // @note executar
+        ciclos--;
     }
 }
