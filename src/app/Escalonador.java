@@ -14,7 +14,6 @@ public class Escalonador {
 
     private int prioridadeMinima, prioridadeMaxima;
     private Fila[] filasDeProcessos;
-    private Fila filaDeEspera;
     private int quantum;
 
     // endregion
@@ -81,7 +80,6 @@ public class Escalonador {
         filasDeProcessos = new Fila[prioridadeMaxima - prioridadeMinima];
         for (Processo processo : processos)
             addProcesso(processo);
-        filaDeEspera = new Fila();
     }
 
     /**
@@ -97,7 +95,6 @@ public class Escalonador {
         filasDeProcessos = new Fila[prioridadeMaxima - prioridadeMinima + 1];
         for (int i = 0; i < filasDeProcessos.length; i++)
             filasDeProcessos[i] = new Fila();
-        filaDeEspera = new Fila();
     }
     // endregion
 
@@ -158,17 +155,13 @@ public class Escalonador {
                         execucao.wait();
                     }
                     if (processo.getCiclos() != 0) {
-                        aplicarRegra();//faz alguma coisa, ainda nao implementada
+                        aplicarRegra();// faz alguma coisa, ainda nao implementada
                         addProcesso(processo);
                     }
                     main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
                     main.atualizar();
                 }
             }
-
-            while (!filaDeEspera.isEmpty())
-                addProcesso((Processo) filaDeEspera.retirarElemento());
-            main.atualizar();
         }
     }
 
@@ -209,7 +202,7 @@ public class Escalonador {
         return (hour + ":" + minute + ":" + second + "." + millis);
     }
 
-    private void aplicarRegra(){
-        //Faz alguma coisa, regra de negocio
+    private void aplicarRegra() {
+        // Faz alguma coisa, regra de negocio
     }
 }

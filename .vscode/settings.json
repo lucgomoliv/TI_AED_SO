@@ -1,5 +1,5 @@
 {
-    "inline-bookmarks.view.showVisibleFilesOnly": true,
+    "inline-bookmarks.view.showVisibleFilesOnly": false,
     "java.dependency.syncWithFolderExplorer": true,
     "java.dependency.packagePresentation": "flat"
 }

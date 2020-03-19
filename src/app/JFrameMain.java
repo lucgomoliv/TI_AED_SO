@@ -21,7 +21,7 @@ public class JFrameMain extends javax.swing.JFrame {
 	public JFrameMain() throws FileNotFoundException {
 		initComponents();
 		setLocationRelativeTo(null);
-		escalonador = new Escalonador(1, 20, 5);
+		escalonador = new Escalonador(1, 20, 20);
 		lerArquivo();
 		atualizar();
 	}
@@ -475,6 +475,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
 	/**
 	 * Executa a função do botão Executar, iniciando a execução do escalonador
+	 * 
 	 * @param evt evento
 	 */
 	private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) { // @note executar
@@ -490,6 +491,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
 	/**
 	 * Executa a função do botão Executar, iniciando a execução do escalonador
+	 * 
 	 * @param evt evento
 	 */
 	private void btnAddProcessoActionPerformed(java.awt.event.ActionEvent evt) { // @note addProcesso
@@ -499,14 +501,16 @@ public class JFrameMain extends javax.swing.JFrame {
 
 	/**
 	 * Escreve uma mensagem na caixa de log
+	 * 
 	 * @param log mensagem a ser escrita
 	 */
 	public void log(String log) {
-		textLog.setText(textLog.getText() + log + "\n");
+		// textLog.setText(textLog.getText() + log + "\n");
 	}
 
 	/**
 	 * Lê o arquivo passado, apenas usado se for ler os dados de um arquivo
+	 * 
 	 * @throws FileNotFoundException
 	 */
 	public void lerArquivo() throws FileNotFoundException { // @note lerArquivo
@@ -523,7 +527,7 @@ public class JFrameMain extends javax.swing.JFrame {
 	/**
 	 * Atualiza a exibição dos dados na tela
 	 */
-	public void atualizar() { //@note atualizar
+	public void atualizar() { // @note atualizar
 		label1.setText(escalonador.filaPorPrioridade(1).toString());
 		label2.setText(escalonador.filaPorPrioridade(2).toString());
 		label3.setText(escalonador.filaPorPrioridade(3).toString());
