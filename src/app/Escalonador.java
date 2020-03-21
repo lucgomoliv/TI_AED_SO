@@ -1,8 +1,5 @@
 package app;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
-
 import estruturadedados.Fila;
 
 /**
@@ -138,27 +135,14 @@ public class Escalonador {
             for (Fila fila : filasDeProcessos) {
                 while (!fila.isEmpty()) {
                     Processo processo = (Processo) fila.retirarElemento();
-                    main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
-                    Thread execucao = new Thread(() -> {
-                        synchronized (this) {
-                            try {
-                                processo.executar();
-                                Thread.sleep(quantum);
-                            } catch (InterruptedException e) {
-                                System.out.println("Thread Interrompida!");
-                            }
-                            notify();
-                        }
-                    });
-                    execucao.start();
-                    synchronized (execucao) {
-                        execucao.wait();
-                    }
+                    //main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
+                    processo.executar();
+                    Thread.sleep(quantum);
                     if (processo.getCiclos() != 0) {
-                        aplicarRegra();// faz alguma coisa, ainda nao implementada
+                        aplicarRegra(processo);// faz alguma coisa, ainda nao implementada
                         addProcesso(processo);
                     }
-                    main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
+                    //main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
                     main.atualizar();
                 }
             }
@@ -186,12 +170,12 @@ public class Escalonador {
         if (processo.getPrioridade() > 1)
             processo.setPrioridade(processo.getPrioridade() - 1);
     }
-
+    
     /**
      * Retorna o tempo atual
      * 
      * @return uma cadeia de caracteres no formato hh:mm:ss.SSS
-     */
+     *//*
     private String timeNow() {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
@@ -200,9 +184,9 @@ public class Escalonador {
         int millis = now.get(ChronoField.MILLI_OF_SECOND);
 
         return (hour + ":" + minute + ":" + second + "." + millis);
-    }
+    }*/
 
-    private void aplicarRegra() {
+    private void aplicarRegra(Processo processo) {
         // Faz alguma coisa, regra de negocio
     }
 }
