@@ -1,5 +1,8 @@
 package app;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
+
 import estruturadedados.Fila;
 
 /**
@@ -12,6 +15,7 @@ public class Escalonador {
     private int prioridadeMinima, prioridadeMaxima;
     private Fila[] filasDeProcessos;
     private int quantum;
+
 
     // endregion
 
@@ -132,18 +136,19 @@ public class Escalonador {
     // @todo refatorar esse código, principalmente o uso do log
     public void executar(JFrameMain main) throws InterruptedException {
         while (true) {
-            for (Fila fila : filasDeProcessos) {
-                while (!fila.isEmpty()) {
-                    Processo processo = (Processo) fila.retirarElemento();
-                    //main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
+            for (int i = 0; i < filasDeProcessos.length; ++i) {
+                while (!filasDeProcessos[i].isEmpty()) {
+                    Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
+                    main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
                     processo.executar();
                     Thread.sleep(quantum);
                     if (processo.getCiclos() != 0) {
-                        aplicarRegra(processo);// faz alguma coisa, ainda nao implementada
+                        aplicarRegra(processo);
                         addProcesso(processo);
                     }
-                    //main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
+                    main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
                     main.atualizar();
+                    if(processo.getPrioridade() -1 < i) --i;
                 }
             }
         }
@@ -175,7 +180,7 @@ public class Escalonador {
      * Retorna o tempo atual
      * 
      * @return uma cadeia de caracteres no formato hh:mm:ss.SSS
-     *//*
+     */
     private String timeNow() {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
@@ -184,9 +189,20 @@ public class Escalonador {
         int millis = now.get(ChronoField.MILLI_OF_SECOND);
 
         return (hour + ":" + minute + ":" + second + "." + millis);
-    }*/
+    }
 
     private void aplicarRegra(Processo processo) {
-        // Faz alguma coisa, regra de negocio
-    }
+        if(processo.ciclosAtual >= 10){ // Promoção
+            promoverProcesso(processo);
+            processo.ciclosAtual = 0;
+
+        }
+        else if (processo.ciclosAtual >= 4 ){ // Rebaixamento
+            rebaixarProcesso(processo);   
+            processo.ciclosAtual++;                       
+        }else{
+            processo.ciclosAtual++;  
+        }
+     }
+
 }

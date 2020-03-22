@@ -505,7 +505,7 @@ public class JFrameMain extends javax.swing.JFrame {
 	 * @param log mensagem a ser escrita
 	 */
 	public void log(String log) {
-		// textLog.setText(textLog.getText() + log + "\n");
+		//textLog.setText(textLog.getText() + log + "\n");
 	}
 
 	/**
