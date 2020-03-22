@@ -15,7 +15,7 @@ public class Escalonador {
     private int prioridadeMinima, prioridadeMaxima;
     private Fila[] filasDeProcessos;
     private int quantum;
-
+    private int i;
 
     // endregion
 
@@ -107,6 +107,8 @@ public class Escalonador {
      * @return true ou false
      */
     public boolean addProcesso(Processo processo) {
+        if (processo.getPrioridade() - 1 < i)
+            i = processo.getPrioridade()-1;
         return filasDeProcessos[processo.getPrioridade() - 1].adicionarElemento(processo);
     }
 
@@ -133,10 +135,9 @@ public class Escalonador {
      * @throws InterruptedException
      */
     // @note executar
-    // @todo refatorar esse código, principalmente o uso do log
     public void executar(JFrameMain main) throws InterruptedException {
         while (true) {
-            for (int i = 0; i < filasDeProcessos.length; ++i) {
+            for (i = 0; i < filasDeProcessos.length; ++i) {
                 while (!filasDeProcessos[i].isEmpty()) {
                     Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
                     main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
@@ -148,7 +149,6 @@ public class Escalonador {
                     }
                     main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
                     main.atualizar();
-                    if(processo.getPrioridade() -1 < i) --i;
                 }
             }
         }
@@ -175,7 +175,7 @@ public class Escalonador {
         if (processo.getPrioridade() > 1)
             processo.setPrioridade(processo.getPrioridade() - 1);
     }
-    
+
     /**
      * Retorna o tempo atual
      * 
@@ -192,17 +192,16 @@ public class Escalonador {
     }
 
     private void aplicarRegra(Processo processo) {
-        if(processo.ciclosAtual >= 10){ // Promoção
+        if (processo.ciclosAtual >= 10) { // Promoção
             promoverProcesso(processo);
             processo.ciclosAtual = 0;
 
+        } else if (processo.ciclosAtual >= 4) { // Rebaixamento
+            rebaixarProcesso(processo);
+            processo.ciclosAtual++;
+        } else {
+            processo.ciclosAtual++;
         }
-        else if (processo.ciclosAtual >= 4 ){ // Rebaixamento
-            rebaixarProcesso(processo);   
-            processo.ciclosAtual++;                       
-        }else{
-            processo.ciclosAtual++;  
-        }
-     }
+    }
 
 }
