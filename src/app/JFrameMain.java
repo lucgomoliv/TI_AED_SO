@@ -1,8 +1,14 @@
 package app;
 
+import java.awt.event.ActionListener;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+
+
 import java.util.Scanner;
+
+
 
 public class JFrameMain extends javax.swing.JFrame {
 
@@ -56,6 +62,7 @@ public class JFrameMain extends javax.swing.JFrame {
 		jLabel22 = new javax.swing.JLabel();
 		btnExecutar = new javax.swing.JButton();
 		btnAddProcesso = new javax.swing.JButton();
+                btnAddLog = new javax.swing.JButton();
 		label1 = new javax.swing.JLabel();
 		label2 = new javax.swing.JLabel();
 		label3 = new javax.swing.JLabel();
@@ -76,8 +83,7 @@ public class JFrameMain extends javax.swing.JFrame {
 		label18 = new javax.swing.JLabel();
 		label19 = new javax.swing.JLabel();
 		label20 = new javax.swing.JLabel();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		textLog = new javax.swing.JTextArea();
+		
 		jLabel23 = new javax.swing.JLabel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -175,14 +181,15 @@ public class JFrameMain extends javax.swing.JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnExecutarActionPerformed(evt);
 			}
-		});
-
+		});   
 		btnAddProcesso.setText("Adicionar Processo");
-		btnAddProcesso.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnAddProcessoActionPerformed(evt);
-			}
-		});
+		btnAddProcesso.addActionListener(this::btnAddProcessoActionPerformed);
+                btnAddLog.setText("Log");
+		btnAddLog.addActionListener(new ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {                   
+                            btnAddLogActionPerformed(evt);                       
+                    }
+                });
 
 		label1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 		label1.setText("");
@@ -244,12 +251,9 @@ public class JFrameMain extends javax.swing.JFrame {
 		label20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 		label20.setText("");
 
-		textLog.setColumns(20);
-		textLog.setRows(5);
-		textLog.setEnabled(false);
-		jScrollPane1.setViewportView(textLog);
+		
 
-		jLabel23.setText("Log:");
+		
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -381,12 +385,12 @@ public class JFrameMain extends javax.swing.JFrame {
 										.addGroup(layout.createSequentialGroup().addComponent(btnExecutar)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 												.addComponent(btnAddProcesso)
+                                                                                                .addComponent(btnAddLog)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
 														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(jLabel23)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403,
-														javax.swing.GroupLayout.PREFERRED_SIZE))))
+												)))
 						.addGroup(layout.createSequentialGroup().addGap(21, 21, 21).addComponent(jLabel1)
 								.addGap(235, 235, 235).addComponent(jLabel2)))
 				.addContainerGap(33, Short.MAX_VALUE)));
@@ -465,9 +469,9 @@ public class JFrameMain extends javax.swing.JFrame {
 						.addGap(36, 36, 36)
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(btnExecutar).addComponent(btnAddProcesso).addComponent(jLabel23))
-								.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addComponent(btnExecutar).addComponent(btnAddProcesso).addComponent(jLabel23)
+                                                                .addComponent(btnAddLog).addComponent(btnAddLog).addComponent(jLabel23))
+								)
 						.addContainerGap()));
 
 		pack();
@@ -479,14 +483,15 @@ public class JFrameMain extends javax.swing.JFrame {
 	 * @param evt evento
 	 */
 	private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) { // @note executar
-		btnExecutar.setEnabled(false);
+		
 		new Thread(() -> {
 			try {
-				escalonador.executar(this);
+				escalonador.executar(this);                            
 			} catch (InterruptedException e) {
 				System.out.println("Thread interrompida");
 			}
 		}).start();
+               
 	}
 
 	/**
@@ -498,15 +503,10 @@ public class JFrameMain extends javax.swing.JFrame {
 		JFrameAddProcesso addProcesso = new JFrameAddProcesso(this);
 		addProcesso.setVisible(true);
 	}
-
-	/**
-	 * Escreve uma mensagem na caixa de log
-	 * 
-	 * @param log mensagem a ser escrita
-	 */
-	public void log(String log) {
-		//textLog.setText(textLog.getText() + log + "\n");
-	}
+        
+        private void btnAddLogActionPerformed(java.awt.event.ActionEvent evt){ // @note addLog
+		escalonador.AbrirLog();
+        }
 
 	/**
 	 * Lê o arquivo passado, apenas usado se for ler os dados de um arquivo
@@ -554,6 +554,7 @@ public class JFrameMain extends javax.swing.JFrame {
 	 * Variáveis geradas pelo JFrame builder do netbeans
 	 */
 	// region variables
+        private javax.swing.JButton btnAddLog;
 	private javax.swing.JButton btnAddProcesso;
 	private javax.swing.JButton btnExecutar;
 	private javax.swing.JLabel jLabel1;
@@ -598,8 +599,10 @@ public class JFrameMain extends javax.swing.JFrame {
 	private javax.swing.JLabel label7;
 	private javax.swing.JLabel label8;
 	private javax.swing.JLabel label9;
-	private javax.swing.JTextArea textLog;
+	
 	private javax.swing.JLabel jLabel23;
-	private javax.swing.JScrollPane jScrollPane1;
+	
 	// endregion
+
+  
 }
