@@ -4,6 +4,12 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 
 import estruturadedados.Fila;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Escalonador
@@ -16,6 +22,8 @@ public class Escalonador {
     private Fila[] filasDeProcessos;
     private int quantum;
     private int i;
+    private FileWriter file;
+    private PrintWriter gravarArq;
 
     // endregion
 
@@ -135,23 +143,29 @@ public class Escalonador {
      * @throws InterruptedException
      */
     // @note executar
-    public void executar(JFrameMain main) throws InterruptedException {
-        while (true) {
-            for (i = 0; i < filasDeProcessos.length; ++i) {
-                while (!filasDeProcessos[i].isEmpty()) {
-                    Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
-                    main.log(timeNow() + ": Processamento inciado para o PID: " + processo.getPid());
-                    processo.executar();
-                    Thread.sleep(quantum);
-                    if (processo.getCiclos() != 0) {
-                        aplicarRegra(processo);
-                        addProcesso(processo);
+    public void executar(JFrameMain main) throws InterruptedException {                
+            try {
+                file = new FileWriter("log.txt");
+                PrintWriter gravarArq = new PrintWriter(file);                        
+                for (i = 0; i < filasDeProcessos.length; ++i) {
+                    while (!filasDeProcessos[i].isEmpty()) {
+                        Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
+                        gravarArq.printf(timeNow() + ": Processamento inciado para o PID: " + processo.getPid() + "\n");
+                        processo.executar();
+                        Thread.sleep(quantum);
+                        if (processo.getCiclos() != 0) {
+                            aplicarRegra(processo);
+                            addProcesso(processo);
+                        }
+                        gravarArq.printf(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid() + "\n");
+                        main.atualizar();
                     }
-                    main.log(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid());
-                    main.atualizar();
                 }
+                file.close();
+            } catch (IOException ex) {
+                System.out.println("Não foi possivel criar o arquivo " + ex);
             }
-        }
+           
     }
 
     /**
@@ -190,6 +204,11 @@ public class Escalonador {
 
         return (hour + ":" + minute + ":" + second + "." + millis);
     }
+    
+    /**
+     * Retorna a nova prioridade do processo
+     * 
+     */
 
     private void aplicarRegra(Processo processo) {
         if (processo.ciclosAtual >= 10) { // Promoção
@@ -201,6 +220,17 @@ public class Escalonador {
             processo.ciclosAtual++;
         } else {
             processo.ciclosAtual++;
+        }
+    }
+     /**
+     * Abre o arquivo de Log
+     * 
+     */
+    public void AbrirLog(){
+        try {
+            java.awt.Desktop.getDesktop().open( new File( "log.txt" ) );
+        } catch (IOException ex) {
+            Logger.getLogger(Escalonador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
