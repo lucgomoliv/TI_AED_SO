@@ -2,11 +2,11 @@
 
 ## Regra para rebaixamento
 
-    Se o processo demorar 4 ciclos 
+    Se o processo demorar 4 ciclos na prioridade atual, ele é rebaixado
 
 ## Regra para promoção
 
-    A cada 200ms passados em espera prioridade aumenta 1; (Rever se é isso mesmo e aplicar)
+    Se o processo demorar 10 ciclos para executar, ele é promovido
 
 ## Gerar arquivo .jar
 
