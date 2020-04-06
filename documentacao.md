@@ -2,7 +2,7 @@
 
 ## Regra para rebaixamento
 
-    Se o processo não terminar na primeira execução, a sua prioridade é rebaixada em 1 (uma) unidade;
+    Se o processo demorar 4 ciclos 
 
 ## Regra para promoção
 

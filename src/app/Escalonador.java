@@ -23,7 +23,6 @@ public class Escalonador {
     private int quantum;
     private int i;
     private FileWriter file;
-    private PrintWriter gravarArq;
 
     // endregion
 
@@ -116,7 +115,7 @@ public class Escalonador {
      */
     public boolean addProcesso(Processo processo) {
         if (processo.getPrioridade() - 1 < i)
-            i = processo.getPrioridade()-1;
+            i = processo.getPrioridade() - 1;
         return filasDeProcessos[processo.getPrioridade() - 1].adicionarElemento(processo);
     }
 
@@ -143,29 +142,29 @@ public class Escalonador {
      * @throws InterruptedException
      */
     // @note executar
-    public void executar(JFrameMain main) throws InterruptedException {                
-            try {
-                file = new FileWriter("log.txt");
-                PrintWriter gravarArq = new PrintWriter(file);                        
-                for (i = 0; i < filasDeProcessos.length; ++i) {
-                    while (!filasDeProcessos[i].isEmpty()) {
-                        Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
-                        gravarArq.printf(timeNow() + ": Processamento inciado para o PID: " + processo.getPid() + "\n");
-                        processo.executar();
-                        Thread.sleep(quantum);
-                        if (processo.getCiclos() != 0) {
-                            aplicarRegra(processo);
-                            addProcesso(processo);
-                        }
-                        gravarArq.printf(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid() + "\n");
-                        main.atualizar();
+    public void executar(JFrameMain main) throws InterruptedException {
+        try {
+            file = new FileWriter("log.txt");
+            PrintWriter gravarArq = new PrintWriter(file);
+            for (i = 0; i < filasDeProcessos.length; ++i) {
+                while (!filasDeProcessos[i].isEmpty()) {
+                    Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
+                    gravarArq.printf(timeNow() + ": Processamento inciado para o PID: " + processo.getPid() + "\n");
+                    processo.executar();
+                    Thread.sleep(quantum);
+                    if (processo.getCiclos() != 0) {
+                        aplicarRegra(processo);
+                        addProcesso(processo);
                     }
+                    gravarArq.printf(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid() + "\n");
+                    main.atualizar();
                 }
-                file.close();
-            } catch (IOException ex) {
-                System.out.println("Não foi possivel criar o arquivo " + ex);
             }
-           
+            file.close();
+        } catch (IOException ex) {
+            System.out.println("Não foi possivel criar o arquivo " + ex);
+        }
+
     }
 
     /**
@@ -204,31 +203,32 @@ public class Escalonador {
 
         return (hour + ":" + minute + ":" + second + "." + millis);
     }
-    
+
     /**
-     * Retorna a nova prioridade do processo
+     * Define a prioridade do processo de acordo com os ciclos atual do processo
      * 
      */
 
     private void aplicarRegra(Processo processo) {
-        if (processo.ciclosAtual >= 10) { // Promoção
+        if (processo.ciclosAtual == 10) { // Promoção
             promoverProcesso(processo);
             processo.ciclosAtual = 0;
 
-        } else if (processo.ciclosAtual >= 4) { // Rebaixamento
+        } else if (processo.ciclosAtual % 4 == 0) { // Rebaixamento
             rebaixarProcesso(processo);
             processo.ciclosAtual++;
         } else {
             processo.ciclosAtual++;
         }
     }
-     /**
+
+    /**
      * Abre o arquivo de Log
      * 
      */
-    public void AbrirLog(){
+    public void AbrirLog() {
         try {
-            java.awt.Desktop.getDesktop().open( new File( "log.txt" ) );
+            java.awt.Desktop.getDesktop().open(new File("log.txt"));
         } catch (IOException ex) {
             Logger.getLogger(Escalonador.class.getName()).log(Level.SEVERE, null, ex);
         }
