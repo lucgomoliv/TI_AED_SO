@@ -235,7 +235,7 @@ public class Escalonador {
         catch(IllegalArgumentException e){
             try {
                 new File("log.txt").createNewFile();
-            } catch (IOException e1) {
+            } catch (IOException e) {
                 System.out.println("Erro ao criar o arquivo");
             }
             abrirLog();
