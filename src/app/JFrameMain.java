@@ -505,7 +505,7 @@ public class JFrameMain extends javax.swing.JFrame {
 	}
         
         private void btnAddLogActionPerformed(java.awt.event.ActionEvent evt){ // @note addLog
-		escalonador.AbrirLog();
+		escalonador.abrirLog();
         }
 
 	/**

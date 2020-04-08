@@ -226,11 +226,19 @@ public class Escalonador {
      * Abre o arquivo de Log
      * 
      */
-    public void AbrirLog() {
+    public void abrirLog() {
         try {
             java.awt.Desktop.getDesktop().open(new File("log.txt"));
         } catch (IOException ex) {
-            Logger.getLogger(Escalonador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Escalonador.class.getName()).log(Level.SEVERE, null, ex);  
+        }
+        catch(IllegalArgumentException e){
+            try {
+                new File("log.txt").createNewFile();
+            } catch (IOException e1) {
+                System.out.println("Erro ao criar o arquivo");
+            }
+            abrirLog();
         }
     }
 
