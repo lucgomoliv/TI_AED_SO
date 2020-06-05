@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,10 @@ public class Escalonador {
     private int quantum;
     private int i;
     private FileWriter file;
+    private Thread CPU0;
+    private Thread CPU1;
+    private boolean cpu0bool;
+    private boolean cpu1bool;
 
     // endregion
 
@@ -30,6 +35,10 @@ public class Escalonador {
     public Fila[] getFilasDeProcessos() {
         return this.filasDeProcessos;
     }
+
+    /*
+     * public Fila[] getFilasDeProntos() { return this.filasDeProntos; }
+     */
 
     public int getPrioridadeMinima() {
         return this.prioridadeMinima;
@@ -142,21 +151,64 @@ public class Escalonador {
      * @throws InterruptedException
      */
     // @note executar
-    public void executar(JFrameMain main) throws InterruptedException {
+    public void executar(JFrameNovo main) throws InterruptedException {
+        cpu0bool = true;
+        cpu1bool = true;
         try {
             file = new FileWriter("log.txt");
             PrintWriter gravarArq = new PrintWriter(file);
+            Semaphore semaphore = new Semaphore(2);
             for (i = 0; i < filasDeProcessos.length; ++i) {
                 while (!filasDeProcessos[i].isEmpty()) {
                     Processo processo = (Processo) filasDeProcessos[i].retirarElemento();
-                    gravarArq.printf(timeNow() + ": Processamento inciado para o PID: " + processo.getPid() + "\n");
-                    processo.executar();
-                    Thread.sleep(quantum);
-                    if (processo.getCiclos() != 0) {
-                        aplicarRegra(processo);
-                        addProcesso(processo);
+                    semaphore.acquire();
+                    if (cpu0bool) {
+                        cpu0bool = false;
+                        CPU0 = new Thread(() -> {
+                            try {
+                                main.execAgora(CPU0, processo);
+                                gravarArq.printf(
+                                        timeNow() + ": Processamento inciado para o PID: " + processo.getPid() + "\n");
+                                processo.executar();
+                                Thread.sleep(quantum);
+                                cpu0bool = true;
+                                semaphore.release();
+                                gravarArq.printf(timeNow() + ": Processamento finalizado para o PID: "
+                                        + processo.getPid() + "\n");
+                                if (processo.getCiclos() != 0) {
+                                    aplicarRegra(processo);
+                                    addProcesso(processo);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                        CPU0.setName("CPU0");
+                        CPU0.start();
+                    } else if (cpu1bool) {
+                        cpu1bool = false;
+                        CPU1 = new Thread(() -> {
+                            try {
+                                main.execAgora(CPU1, processo);
+                                gravarArq.printf(
+                                        timeNow() + ": Processamento inciado para o PID: " + processo.getPid() + "\n");
+                                processo.executar();
+                                Thread.sleep(quantum);
+                                cpu1bool = true;
+                                semaphore.release();
+                                gravarArq.printf(timeNow() + ": Processamento finalizado para o PID: "
+                                        + processo.getPid() + "\n");
+                                if (processo.getCiclos() != 0) {
+                                    aplicarRegra(processo);
+                                    addProcesso(processo);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                        CPU1.setName("CPU1");
+                        CPU1.start();
                     }
-                    gravarArq.printf(timeNow() + ": Processamento finalizado para o PID: " + processo.getPid() + "\n");
                     main.atualizar();
                 }
             }
@@ -230,9 +282,8 @@ public class Escalonador {
         try {
             java.awt.Desktop.getDesktop().open(new File("log.txt"));
         } catch (IOException ex) {
-            Logger.getLogger(Escalonador.class.getName()).log(Level.SEVERE, null, ex);  
-        }
-        catch(IllegalArgumentException e){
+            Logger.getLogger(Escalonador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException e) {
             try {
                 new File("log.txt").createNewFile();
             } catch (IOException ex) {

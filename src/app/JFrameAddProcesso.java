@@ -11,12 +11,12 @@ public class JFrameAddProcesso extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = 7413516304164848096L;
 
-	JFrameMain main;
+	JFrameNovo main;
 
 	/**
 	 * Cria um novo JFrame
 	 */
-	public JFrameAddProcesso(JFrameMain main) {
+	public JFrameAddProcesso(JFrameNovo main) {
 		initComponents();
 		setLocationRelativeTo(null);
 		this.main = main;

@@ -133,7 +133,7 @@ public class Processo implements IDado {
      */
     @Override
     public String toString() {
-        return "PID='" + getPid() + "'" + ", nome='" + getNome();
+        return "PID='" + getPid();
     }
 
     /**
